@@ -1,0 +1,16 @@
+{
+  "name": "prsnl.stack.backend",
+  "version": "1.0.0",
+  "description": "this contains the logic to all my backend along with auth and also the logic for individual project present on the website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.0"
+  }
+}
