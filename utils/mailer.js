@@ -7,11 +7,11 @@ class Mailer {
         this.transporter = null;
     }
     async checkInstance() {
-        if(!this.app_pass || !this.smtp_user) return {
+        if (!this.app_pass || !this.smtp_user) return {
             isActive: false,
-            data:"Not a valid credentials",
-            user:this.smtp_user,
-            pass:this.app_pass
+            data: "Not a valid credentials",
+            user: this.smtp_user,
+            pass: this.app_pass
         }
         this.transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -24,22 +24,45 @@ class Mailer {
         });
         if (!this.transporter) return {
             isActive: false,
-            data:"No transporter instance found"
+            data: "No transporter instance found"
         };
         try {
             await this.transporter.verify();
             return {
-                isActive:true,
-                data:"Instance ready"
+                isActive: true,
+                data: "Instance ready"
             }
         } catch (err) {
             return {
-                isActive:false,
-                data:err
+                isActive: false,
+                data: err
             }
         }
+    }
+    convertRecepients(to) {
+        if (!Array.isArray(to)) return to;
+        return to.join();
+    }
+    async sendMessage(to = [], subject = "demo subject", message = "demo message") {
+        if (to.length == 0 || !subject || !message) throw new Error("Provide valid data for sending mail")
+        const { isActive, data } = await this.checkInstance();
+        if (!isActive) throw new Error(data)
+        try {
+            const info = this.transporter.sendMail({
+                from: `"Ujjwal Gupta"<${this.smtp_user}>`,
+                to: this.convertRecepients(to),
+                subject: subject,
+                text: message, 
+            })
+            return info
+        } catch (error) {
+            throw error
+        }
+    }
+    async sendPage(to = [], subject = "demo subject", page) {
+
     }
 }
 
 
-export {Mailer}
+export { Mailer }
