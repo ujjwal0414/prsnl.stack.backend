@@ -22,5 +22,8 @@ class Logs {
     getLogs(mode = this.mode){
 
     }
+    getLogFilePath(){
+        return `${LOGS_FOLDER}/${this.mode}/${this.log_folder_name}`;
+    }
 }
 
