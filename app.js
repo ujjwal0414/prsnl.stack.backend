@@ -1,6 +1,7 @@
 import express from "express"
 import cookieParser from "cookie-parser";
 import { authRouter } from "./src/auth/routes/auth.route.js";
+import cors from 'cors'
 const app = express();
 app.use(cors({
     origin: '*',

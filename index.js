@@ -1,7 +1,12 @@
+import { configDotenv } from "dotenv";
+configDotenv();
 import {app} from "./app.js";
+import { logs } from "./utils/logger.js";
 
-
-app.listen(3000,(err)=>{
-    console.log(err);
-    
+app.listen(process.env.BACKEND_PORT,(err)=>{
+    if(err){
+        logs.error("Cant connect")
+    }else{
+        logs.info("connected")
+    }
 })
