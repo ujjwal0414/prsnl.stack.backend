@@ -59,8 +59,23 @@ class Mailer {
             throw error
         }
     }
-    async sendPage(to = [], subject = "demo subject", page) {
 
+    async sendPagee(to = [], subject = "demo subject", htmlContent = "<b>Interesting to collaborate with nodemailer</b>",message="") {
+        if (to.length == 0 || !subject ) throw new Error("Provide valid data for sending mail")
+        const { isActive, data } = await this.checkInstance();
+        if (!isActive) throw new Error(data)
+        try {
+            const info = this.transporter.sendMail({
+                from: `"Ujjwal Gupta"<${this.smtp_user}>`,
+                to: this.convertRecepients(to),
+                subject: subject,
+                text: message, 
+                html:htmlContent
+            })
+            return info
+        } catch (error) {
+            throw error
+        }
     }
 }
 
