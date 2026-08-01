@@ -60,7 +60,7 @@ class Mailer {
         }
     }
 
-    async sendPagee(to = [], subject = "demo subject", htmlContent = "<b>Interesting to collaborate with nodemailer</b>",message="") {
+    async sendPage(to = [], subject = "demo subject", htmlContent = "<b>Interesting to collaborate with nodemailer</b>",message="") {
         if (to.length == 0 || !subject ) throw new Error("Provide valid data for sending mail")
         const { isActive, data } = await this.checkInstance();
         if (!isActive) throw new Error(data)
