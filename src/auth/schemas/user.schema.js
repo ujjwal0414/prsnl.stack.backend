@@ -11,15 +11,17 @@ const userSchema = new Schema({
     timestamps:true
 });
 userSchema.pre("save",async function(){
-    let user = this;
-    if(user.isModified("password")){
-        bcrypt.hash(user.password,3,(err,hash)=>{
-            if(err){
-                return error;
-            }else{
-                user.password = hash;
-            }
-        })
+  
+    if(this.isModified("password")){
+        try {
+            const hash = await bcrypt.hash(this.password,10);
+            this.password = hash;
+            
+        } catch (error) {
+            return
+        }
+    }else{
+        
     }
 })
 

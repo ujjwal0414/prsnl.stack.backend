@@ -17,7 +17,8 @@ const signUp = asyncHandler(async(req,resp)=>{
         sendResponse(resp,403,false,checkUserExistence,"User already present")
         return
     }
-    const createUser = await userModel.insertOne({userEmail,password});
-    sendResponse(resp,201,true,createUser,"User created successfully")
+    const createUser = new userModel(req.body);
+    const saveData = await createUser.save();
+    sendResponse(resp,201,true,saveData,"User created successfully")
 })
 export {signUp}
