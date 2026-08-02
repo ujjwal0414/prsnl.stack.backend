@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { userModel } from "../schemas/user.schema.js";
 import { userZodSchema } from "../schemas/user.zod.js";
 import { logs } from "../../../utils/logger.js";
+import { sendResponse } from "express-res-handler";
 const signUp = asyncHandler(async(req,resp)=>{
     const {userEmail,password} = req.body;
     const validData = await userZodSchema.safeParseAsync({
@@ -9,23 +10,14 @@ const signUp = asyncHandler(async(req,resp)=>{
         password:password
     });
     if(!validData.success){
-        resp.status(403).send({
-            message:"Validation failed",
-            data:validData?.error?.issues
-        })
+        sendResponse(resp,403,false,validData?.error?.issues,"Could not verify credentials");
     }
     const checkUserExistence = await userModel.findOne({userEmail})
     if(checkUserExistence){
-        resp.status(203).send({
-            message:"User already present",
-            data:checkUserExistence
-        })
+        sendResponse(resp,403,false,checkUserExistence,"User already present")
         return
     }
     const createUser = await userModel.insertOne({userEmail,password});
-    resp.status(201).send({
-        message:"User created successfully",
-        data:createUser
-    })
+    sendResponse(resp,201,true,createUser,"User created successfully")
 })
 export {signUp}
