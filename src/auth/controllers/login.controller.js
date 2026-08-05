@@ -2,7 +2,6 @@ import asyncHandler from "express-async-handler";
 import { Mailer } from "../../../utils/mailer.js";
 
 import { logs } from "../../../utils/logger.js";
-
 import { sendResponse } from "express-res-handler";
 import { userZodSchema } from "../schemas/user.zod.js";
 import bcrypt from "bcrypt"
