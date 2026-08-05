@@ -2,11 +2,12 @@ import asyncHandler from "express-async-handler";
 import { Mailer } from "../../../utils/mailer.js";
 import { logs } from "../../../utils/logger.js";
 import { sendResponse } from "express-res-handler";
-import { userZodSchema } from "../schemas/user.zod.js";
+import { userLoginZodSchema, userZodSchema } from "../schemas/user.zod.js";
 import bcrypt from "bcrypt"
 import { userModel } from "../schemas/user.schema.js";
 const login = asyncHandler(async(req,resp)=>{
-    const validateData = userZodSchema.safeParse(req.body);
+    const validateData = userLoginZodSchema.safeParse(req.body);
+    
     if(!validateData.success){
         sendResponse(resp,403,false,validateData?.error?.issues,"Credentials does not match some criteria");
         return
@@ -24,9 +25,9 @@ const login = asyncHandler(async(req,resp)=>{
             return
         }else{
             if(result){
-                sendResponse(resp,200,true,null,"User found");
+                return sendResponse(resp,200,true,null,"User found");
             }else{
-            sendResponse(resp,200,true,null,"Password did not match");
+            return sendResponse(resp,403,true,null,"Password did not match");
             }
         }
     })

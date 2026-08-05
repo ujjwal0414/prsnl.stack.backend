@@ -6,4 +6,8 @@ const userZodSchema = z.object({
     role:z.literal(["admin","client","vendor"]),
     phone:z.string()
 })
-export {userZodSchema}
+const userLoginZodSchema = z.object({
+    userEmail:z.email(),
+    password:z.string().min(6,"Min length of password should be 6").max(8,"Max length of passowrd should be 8")
+})
+export {userZodSchema,userLoginZodSchema}
