@@ -5,10 +5,7 @@ import { logs } from "../../../utils/logger.js";
 import { sendResponse } from "express-res-handler";
 const signUp = asyncHandler(async(req,resp)=>{
     const {userEmail,password} = req.body;
-    const validData = await userZodSchema.safeParseAsync({
-        userEmail:userEmail,
-        password:password
-    });
+    const validData = await userZodSchema.safeParseAsync(req.body);
     if(!validData.success){
         sendResponse(resp,403,false,validData?.error?.issues,"Could not verify credentials");
     }
