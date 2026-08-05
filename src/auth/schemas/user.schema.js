@@ -6,6 +6,16 @@ const userSchema = new Schema({
     },
     password:{
         type:String
+    },
+    admin:{
+        type:String,
+    },
+    country:{
+        type:String,
+        default:"in"
+    },
+    contact:{
+        type:String
     }
 },{
     timestamps:true
