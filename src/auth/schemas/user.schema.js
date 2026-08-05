@@ -10,10 +10,6 @@ const userSchema = new Schema({
     role:{
         type:String,
     },
-    country:{
-        type:String,
-        default:"in"
-    },
     contact:{
         type:String
     }
