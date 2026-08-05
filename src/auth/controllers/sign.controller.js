@@ -22,7 +22,7 @@ const signUp = asyncHandler(async(req,resp)=>{
         })
         
     }
-    if(process.env.BACKEND_ENV == "dev"){
+    if(process.env.BACKEND_ENV == "prod"){
         const checkPhoneNos = await userModel.findOne({phone});
         if(checkPhoneNos){
             return sendResponse(resp,403,false,null,"Phone number already registered")
