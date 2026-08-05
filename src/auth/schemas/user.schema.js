@@ -10,7 +10,7 @@ const userSchema = new Schema({
     role:{
         type:String,
     },
-    contact:{
+    phone:{
         type:String
     }
 },{

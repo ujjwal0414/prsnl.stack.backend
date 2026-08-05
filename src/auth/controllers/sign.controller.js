@@ -7,15 +7,27 @@ const signUp = asyncHandler(async(req,resp)=>{
     const {userEmail,password} = req.body;
     const validData = await userZodSchema.safeParseAsync(req.body);
     if(!validData.success){
-        sendResponse(resp,403,false,validData?.error?.issues,"Could not verify credentials");
+        return resp.status(403).send({
+            success:false,
+            data:validData?.error?.issues,
+            message:"Could not verify credentials"
+        })
     }
     const checkUserExistence = await userModel.findOne({userEmail})
     if(checkUserExistence){
-        sendResponse(resp,403,false,checkUserExistence,"User already present")
-        return
+        return resp.status(403).send({
+            success:false,
+            data:null,
+            message:"User already present"
+        })
+        
     }
     const createUser = new userModel(req.body);
     const saveData = await createUser.save();
-    sendResponse(resp,201,true,saveData,"User created successfully")
+    return resp.status(201).send({
+            success:false,
+            data:saveData,
+            message:"User Created"
+        })
 })
 export {signUp}
