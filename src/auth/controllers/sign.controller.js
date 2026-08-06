@@ -35,11 +35,16 @@ const signUp = asyncHandler(async(req,resp)=>{
     const saveData = await createUser.save();
     const refreshToken = generateRefreshToken(saveData.userEmail);
     const updateUserSession = await userModel.findOneAndUpdate({userEmail},{
-        
+        $push:{
+            sessions:{
+                $each:[{refreshToken:refreshToken,os:os}],
+                $slice:process.env.ALLOWED_SESSIONS || 3
+            }
+        }
     })
     return resp.status(201).send({
             success:false,
-            data:{...saveData,refreshToken:refreshToken},
+            data:{...saveData,refreshToken:refreshToken,...updateUserSession},
             message:"User Created"
         })
 })
