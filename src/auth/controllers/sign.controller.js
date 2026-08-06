@@ -4,8 +4,10 @@ import { userZodSchema } from "../schemas/user.zod.js";
 import { logs } from "../../../utils/logger.js";
 import { sendResponse } from "express-res-handler";
 const signUp = asyncHandler(async(req,resp)=>{
-    const {userEmail,password,phone} = req.body;
-    const validData = await userZodSchema.safeParseAsync(req.body);
+    const {userEmail,password,phone,role,os} = req.body;
+    logs.info(req.body)
+    const userData = {userEmail,password,phone,role};
+    const validData = await userZodSchema.safeParseAsync(userData);
     if(!validData.success){
         return resp.status(403).send({
             success:false,
@@ -28,7 +30,7 @@ const signUp = asyncHandler(async(req,resp)=>{
             return sendResponse(resp,403,false,null,"Phone number already registered")
         }
     }
-    const createUser = new userModel(req.body);
+    const createUser = new userModel(userData);
     const saveData = await createUser.save();
     return resp.status(201).send({
             success:false,

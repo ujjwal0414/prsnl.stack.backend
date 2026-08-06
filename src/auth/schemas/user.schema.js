@@ -1,5 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+const sessionSchema = new Schema({
+    refreshToken:String,
+    os:{
+        name:String,
+        version:String
+    }
+})
 const userSchema = new Schema({
     userEmail:{
         type:String
@@ -12,7 +20,8 @@ const userSchema = new Schema({
     },
     phone:{
         type:String
-    }
+    },
+    sessions:[sessionSchema]
 },{
     timestamps:true
 });
@@ -30,5 +39,19 @@ userSchema.pre("save",async function(){
         
     }
 })
+userSchema.methods.generateAccessToken = function(){
+    return jwt.sign({
+        userEmail:this.userEmail
+    },process.env.ACCESS_TOKEN_KEY,{
+        expiresIn:"1h"
+    })
+}
+userSchema.methods.generateRefreshToken = function(){
+    return jwt.sign({
+        userEmail:this.userEmail
+    },process.env.REFRESH_TOKEN_KEY,{
+        expiresIn:"1d"
+    })
+}
 const userModel = mongoose.model("user",userSchema)
 export {userModel}
