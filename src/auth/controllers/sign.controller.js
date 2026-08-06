@@ -3,6 +3,7 @@ import { userModel } from "../schemas/user.schema.js";
 import { userZodSchema } from "../schemas/user.zod.js";
 import { logs } from "../../../utils/logger.js";
 import { sendResponse } from "express-res-handler";
+import { generateRefreshToken } from "../../../utils/generateToken.js";
 const signUp = asyncHandler(async(req,resp)=>{
     const {userEmail,password,phone,role,os} = req.body;
     logs.info(req.body)
@@ -32,9 +33,13 @@ const signUp = asyncHandler(async(req,resp)=>{
     }
     const createUser = new userModel(userData);
     const saveData = await createUser.save();
+    const refreshToken = generateRefreshToken(saveData.userEmail);
+    const updateUserSession = await userModel.findOneAndUpdate({userEmail},{
+        
+    })
     return resp.status(201).send({
             success:false,
-            data:saveData,
+            data:{...saveData,refreshToken:refreshToken},
             message:"User Created"
         })
 })

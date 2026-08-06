@@ -5,6 +5,7 @@ import { sendResponse } from "express-res-handler";
 import { userLoginZodSchema, userZodSchema } from "../schemas/user.zod.js";
 import bcrypt from "bcrypt"
 import { userModel } from "../schemas/user.schema.js";
+import { generateRefreshToken } from "../../../utils/generateToken.js";
 const login = asyncHandler(async(req,resp)=>{
     const validateData = userLoginZodSchema.safeParse(req.body);
     
@@ -25,7 +26,8 @@ const login = asyncHandler(async(req,resp)=>{
             return
         }else{
             if(result){
-                return sendResponse(resp,200,true,null,"User found");
+                const refreshToken = generateRefreshToken(getUserDetails.userEmail)
+                return sendResponse(resp,200,true,{refreshToken:refreshToken},"User found");
             }else{
             return sendResponse(resp,403,true,null,"Password did not match");
             }
