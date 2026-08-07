@@ -7,4 +7,4 @@ vendorRouter.get("/getVendorAuth",getVendor)
 
 
 
-export {vendorRouter}
+export {vendorRouter}    
