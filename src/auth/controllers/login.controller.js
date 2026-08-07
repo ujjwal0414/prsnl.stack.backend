@@ -27,7 +27,7 @@ const login = asyncHandler(async(req,resp)=>{
         }else{
             if(result){
                 const refreshToken = generateRefreshToken(getUserDetails.userEmail)
-                return sendResponse(resp,200,true,{refreshToken:refreshToken},"User found");
+                return sendResponse(resp,200,true,{refreshToken:refreshToken,role:getUserDetails.role},"User found");
             }else{
             return sendResponse(resp,403,true,null,"Password did not match");
             }
