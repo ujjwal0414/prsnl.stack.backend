@@ -33,7 +33,7 @@ const signUp = asyncHandler(async(req,resp)=>{
     }
     const createUser = new userModel(userData);
     const saveData = await createUser.save();
-    const refreshToken = generateRefreshToken(saveData.userEmail);
+    const refreshToken = generateRefreshToken(saveData);
     const updateUserSession = await userModel.findOneAndUpdate({userEmail},{
         $push:{
             sessions:{
