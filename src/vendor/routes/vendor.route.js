@@ -6,5 +6,4 @@ vendorRouter.use(isUserAuthenticated)
 vendorRouter.get("/getVendorAuth",getVendor)
 
   
-
 export {vendorRouter}     
