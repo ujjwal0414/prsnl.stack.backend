@@ -4,6 +4,6 @@ export const generateRefreshToken = (userData) => {
             userEmail:userData.userEmail,
             role:userData.role
         },process.env.REFRESH_TOKEN_KEY,{
-            expiresIn:"2h"
+            expiresIn:"10s"
         })
 }

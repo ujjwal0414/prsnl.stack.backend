@@ -13,7 +13,10 @@ const isUserAuthenticated = (async(req,response,next)=>{
     try {
         const token = authorizationheader.replace("Bearer ", "");
         const secret = process.env.REFRESH_TOKEN_KEY;
-        const decodedData = jwt.decode(token,secret);
+        const decodedData = jwt.verify(
+    token,
+    process.env.REFRESH_TOKEN_KEY
+);
         logs.info(decodedData)
         const findUser = await userModel.findOne({
             userEmail:decodedData.userEmail
