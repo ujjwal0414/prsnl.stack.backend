@@ -6,6 +6,7 @@ import { userModel } from "../auth/schemas/user.schema.js";
 import { logs } from "../../utils/logger.js";
 const isUserAuthenticated = (async(req,response,next)=>{
     const authorizationheader = req.header("Authorization")
+    logs.info(authorizationheader)
     if(!authorizationheader){
         return sendResponse(response,401,false,null,"No authorization header present");
     }
@@ -13,6 +14,7 @@ const isUserAuthenticated = (async(req,response,next)=>{
         const token = authorizationheader.replace("Bearer ", "");
         const secret = process.env.REFRESH_TOKEN_KEY;
         const decodedData = jwt.decode(token,secret);
+        logs.info(decodedData)
         const findUser = await userModel.findOne({
             userEmail:decodedData.userEmail
         },{
