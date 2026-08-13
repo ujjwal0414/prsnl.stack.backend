@@ -17,7 +17,7 @@ const isUserAuthenticated = (async(req,response,next)=>{
     token,
     process.env.REFRESH_TOKEN_KEY
 );
-        logs.info(decodedData)
+
         const findUser = await userModel.findOne({
             userEmail:decodedData.userEmail
         },{
