@@ -6,7 +6,7 @@ import { userModel } from "../auth/schemas/user.schema.js";
 import { logs } from "../../utils/logger.js";
 const isUserAuthenticated = (async(req,response,next)=>{
     const authorizationheader = req.header("Authorization")
-    logs.info(authorizationheader)
+    
     if(!authorizationheader){
         return sendResponse(response,401,false,null,"No authorization header present");
     }
