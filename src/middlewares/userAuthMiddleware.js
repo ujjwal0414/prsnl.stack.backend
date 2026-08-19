@@ -36,7 +36,6 @@ const isUserAuthenticated = (async(req,response,next)=>{
         req.decodedData = decodedData
         next();
     } catch (error) {
-        logs.info(error)
         return sendResponse(response,401,false,null,"Please authenticate")
     }
 })

@@ -132,24 +132,19 @@ const vendorSchema = new Schema(
     // Reference to a base User/Auth document rather than duplicating
     // credentials here. Keeps auth concerns (password, sessions,
     // login) separate from the vendor business profile.
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-      unique: true,
-    },
+    
 
-    businessName: {
-      type: String,
-      required: true,
-      trim: true,
-      maxlength: 150,
-    },
-    vendorOwner: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    // businessName: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    //   maxlength: 150,
+    // },
+    // vendorOwner: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
     vendorEmail: {
       type: String,
       required: true,
@@ -158,7 +153,7 @@ const vendorSchema = new Schema(
       trim: true,
       match: [/^\S+@\S+\.\S+$/, "Invalid email"],
     },
-    contact: {
+    phone: {
       type: String,
       required: true,
       match: [/^\+?[0-9]{7,15}$/, "Invalid phone number"],
@@ -235,4 +230,4 @@ const vendorSchema = new Schema(
 
 vendorSchema.index({ businessName: "text", vendorOwner: "text" });
 
-export const Vendor = model("Vendor", vendorSchema);
+export const VendorModel = model("Vendor", vendorSchema);

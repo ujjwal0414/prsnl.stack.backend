@@ -4,6 +4,7 @@ import { userZodSchema } from "../schemas/user.zod.js";
 import { logs } from "../../../utils/logger.js";
 import { sendResponse } from "express-res-handler";
 import { generateRefreshToken } from "../../../utils/generateToken.js";
+import { VendorModel } from "../../vendor/schemas/vendor.model.js";
 const signUp = asyncHandler(async(req,resp)=>{
     const {userEmail,password,phone,role,os} = req.body;
     logs.info(req.body)
@@ -33,6 +34,14 @@ const signUp = asyncHandler(async(req,resp)=>{
     }
     const createUser = new userModel(userData);
     const saveData = await createUser.save();
+    let vendorProfileSaveData = null;
+    if(saveData && role == "vendor"){
+        const createVendorProfile = new VendorModel({
+        vendorEmail:userEmail,
+        phone:phone
+    })
+    vendorProfileSaveData = await createVendorProfile.save();
+    }
     const refreshToken = generateRefreshToken(saveData);
     const updateUserSession = await userModel.findOneAndUpdate({userEmail},{
         $push:{
@@ -42,10 +51,11 @@ const signUp = asyncHandler(async(req,resp)=>{
             }
         }
     })
+    
     return resp.status(201).send({
             success:false,
             data:{...saveData,refreshToken:refreshToken},
-            message:"User Created"
+            message:`User Created ${role == "vendor" && vendorProfileSaveData ? "and vendor profile created" :"but no profile created"}`
         })
 })
 export {signUp}
