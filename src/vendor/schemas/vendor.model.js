@@ -177,7 +177,7 @@ const vendorSchema = new Schema(
       // real-time presence, distinct from isActive (account-level enable/disable)
       type: String,
       enum: ["Online", "Offline", "Busy", "Out of Office"],
-      default: "Offline",
+      default: "Online",
     },
     lastActiveAt: {
       // used to auto-expire a stale "Online" status via a heartbeat job
