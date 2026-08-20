@@ -123,7 +123,6 @@ const serviceSchema = new Schema({
 
 serviceSchema.index({ location: "2dsphere" });
 serviceSchema.index({ category: 1, "address.city": 1 });
-
 /**
  * ── Root schema: Vendor ──────────────────────────────────────────
  */
