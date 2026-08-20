@@ -153,6 +153,11 @@ const vendorSchema = new Schema(
       trim: true,
       match: [/^\S+@\S+\.\S+$/, "Invalid email"],
     },
+    subscription:{
+      type:String,
+      enum:["basic","premium","pro"],
+      default:"basic"
+    },
     phone: {
       type: String,
       required: true,
