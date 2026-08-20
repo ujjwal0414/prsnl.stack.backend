@@ -132,7 +132,6 @@ const vendorSchema = new Schema(
     // Reference to a base User/Auth document rather than duplicating
     // credentials here. Keeps auth concerns (password, sessions,
     // login) separate from the vendor business profile.
-    
 
     // businessName: {
     //   type: String,
