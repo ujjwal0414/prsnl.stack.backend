@@ -54,7 +54,7 @@ const signUp = asyncHandler(async(req,resp)=>{
     
     return resp.status(201).send({
             success:false,
-            data:{...saveData,refreshToken:refreshToken},
+            data:{...saveData,refreshToken:refreshToken,profileData:vendorProfileSaveData},
             message:`User Created ${role == "vendor" && vendorProfileSaveData ? "and vendor profile created" :"but no profile created"}`
         })
 })

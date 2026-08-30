@@ -206,7 +206,9 @@ const vendorSchema = new Schema(
       verified: { type: Boolean, default: false },
     },
 
-    profileImage: { type: String }, // URL, actual file lives in object storage
+    profileImage: { type: String,
+      default:"https://cdn-icons-png.flaticon.com/512/10337/10337609.png"
+     }, // URL, actual file lives in object storage
 
     averageRating: {
       // denormalized counter — actual review docs live in a separate
