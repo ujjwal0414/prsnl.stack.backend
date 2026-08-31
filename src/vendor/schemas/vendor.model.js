@@ -8,28 +8,37 @@ import { Schema, model, Types } from "mongoose";
 const timeSlotSchema = new Schema(
   {
     startTime: {
-      // stored as minutes-from-midnight (0–1439) → cheap to query/sort/compare
-      type: Number,
+      type: String,
       required: true,
-      min: 0,
-      max: 1439,
+      match: [
+        /^([01]\d|2[0-3]):[0-5]\d$/,
+        "Invalid start time"
+      ],
     },
+
     endTime: {
-      type: Number,
+      type: String,
       required: true,
-      min: 0,
-      max: 1439,
-      validate: {
-        validator: function (v) {
-          return v > this.startTime;
-        },
-        message: "endTime must be after startTime",
-      },
+      match: [
+        /^([01]\d|2[0-3]):[0-5]\d$/,
+        "Invalid end time"
+      ],
     },
   },
   { _id: false }
 );
 
+timeSlotSchema.path("endTime").validate(function (v) {
+  if (!v || !this.startTime) return true;
+
+  const [startHour, startMinute] = this.startTime.split(":").map(Number);
+  const [endHour, endMinute] = v.split(":").map(Number);
+
+  const start = startHour * 60 + startMinute;
+  const end = endHour * 60 + endMinute;
+
+  return end > start;
+}, "endTime must be after startTime");
 const availabilitySchema = new Schema(
   {
     day: {
@@ -97,8 +106,8 @@ const serviceSchema = new Schema({
       default: "Point",
     },
     coordinates: {
-      type: [Number], // [lng, lat]
-      required: true,
+      type: [Number],
+      default:[0,0]
     },
   },
   availability: {
@@ -106,9 +115,9 @@ const serviceSchema = new Schema({
     default: [],
   },
   pricePerHour: {
-    type: Number,
+    type: String,
     required: true,
-    min: 0,
+    min: "0",
   },
   currency: {
     type: String,

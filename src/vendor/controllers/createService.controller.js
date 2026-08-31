@@ -16,6 +16,15 @@ const createServide = asyncHandler(async(req,resp)=>{
     if(subscription=="basic" && services.length >= 3) return sendResponse(resp,403,false,null,"Upgrade from basic plan to create new service.")
     if(subscription=="premium" && services.length >=5) return sendResponse(resp,403,false,null,"Upgrade from premium plan to create new service.")
     
-    
+    const pushService = await VendorModel.updateOne({
+        vendorEmail:userEmail
+    },{
+        $push:{
+            services:req.body.serviceCreationData
+        }
+    },{
+        upsert:true
+    });
+    return sendResponse(resp,201,true,pushService,"Service Created")
 })
 export {createServide}
