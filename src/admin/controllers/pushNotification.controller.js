@@ -24,7 +24,7 @@ const pushNotification = asyncHandler(async(req,resp)=>{
     if(!from || !subject || !message) return sendResponse(resp,403,false,null,"Empty fields detected")
     const userDetails = await userModel.findOne({userEmail:from});
     if(!userDetails) return sendResponse(resp,404,false,null,"No such user exists in our database")
-    logs.info(req.body)
+    
     let recepient_mail = getRecepientMail(recipient);
     const mailer = new Mailer(process.env.SMTP_USER,process.env.SMTP_PASS);
     const mess = `Respected Sir/Madam,
